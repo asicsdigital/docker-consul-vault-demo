@@ -6,7 +6,7 @@ services:
     image: consul:latest
     networks:
       - consul-demo
-    command: "kv put user $USER"
+    command: "kv put demo/user $USER"
     environment:
       CONSUL_HTTP_ADDR: "http://consul-server-bootstrap:8500"
 
@@ -21,6 +21,21 @@ services:
     command: "-consul-addr http://consul-server-bootstrap:8500 -template /tpl/in.tpl:/tpl/out.txt -once"
     volumes:
       - "./tpl:/tpl"
+
+  consultemplate-demo:
+    #image: dockersamples/static-site:latest
+    build: ./static-site
+    networks:
+      - consul-demo
+    ports:
+      - "80:8080"
+      - "443:8443"
+    command: "agent -server -bootstrap-expect 3 -ui -client 0.0.0.0"
+
+#envconsul -consul-addr consul-server-bootstrap:8500   -prefix demo -upcase -once env
+#envconsul -consul-ssl=false -consul-addr consul-server-bootstrap:8500 -log-level=debug  -prefix demo -upcase -once env
+
+#docker run --rm -it -P -e AUTHOR="Alaric"  dockersamples/static-site
 #docker run --rm -it -v $(pwd)/tpl:/tpl --network docker-consul-vault-demo_consul-demo  hashicorp/consul-template -consul-addr "consul-server-bootstrap:8500" -template "/tpl/in.tpl:/tpl/out.txt" -once
 #docker run --rm -it --network docker-consul-vault-demo_consul-demo -e CONSUL_HTTP_ADDR=http://consul-server-bootstrap:8500 consul:latest kv get -recurse /
 networks:
