@@ -1,5 +1,6 @@
 FROM nginx
 ENV AUTHOR=Docker
+EXPOSE 80
 
 WORKDIR /usr/share/nginx/html
 COPY Hello_docker.html /usr/share/nginx/html
@@ -15,7 +16,6 @@ RUN tar -xvzf consul-template.tgz
 RUN mv consul-template /usr/local/bin/consul-template
 RUN chmod +x /usr/local/bin/consul-template
 
-COPY start-web.sh /usr/share/nginx/html
 COPY envconsul-config.hcl /usr/share/nginx/html
 COPY consul-template-config.hcl /usr/share/nginx/html
 
@@ -28,8 +28,4 @@ ENTRYPOINT ["/tini", "--"]
 # Run your program under Tini
 #CMD ["/your/program", "-and", "-its", "arguments"]
 # or docker run your-image /your/program ...
-
-#CMD cd /usr/share/nginx/html && sed -e s/Docker/"$AUTHOR"/ Hello_docker.html > index.html ; nginx -g 'daemon off;'
-#CMD envconsul -config=config.hcl /usr/share/nginx/html/start-web.sh
-#CMD ["envconsul", "-config=config.hcl", "/usr/share/nginx/html/start-web.sh"]
 CMD ["consul-template", "-config", "/usr/share/nginx/html/consul-template-config.hcl"]
