@@ -36,5 +36,15 @@ services:
     networks:
       - consul-demo
 
+  healthcheck:
+    image: asicsdigital/healthcheck:latest
+    environment:
+      - PORT=3000
+      - CONSUL_HTTP_ADDR=http://consul-agent-1:8500
+    ports:
+      - "3000:3000"
+    networks:
+      - consul-demo
+
 networks:
   consul-demo:

@@ -1,0 +1,22 @@
+[
+	{
+		"key": "healthcheck/",
+		"flags": 0,
+		"value": ""
+	},
+	{
+		"key": "healthcheck/healthcheck_app",
+		"flags": 0,
+		"value": "aGVhbHRoY2hlY2s="
+	},
+	{
+		"key": "healthcheck/healthcheck_metrics",
+		"flags": 0,
+		"value": "e30="
+	},
+	{
+		"key": "healthcheck/healthcheck_status",
+		"flags": 0,
+		"value": "MjAw"
+	}
+]

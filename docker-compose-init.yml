@@ -21,5 +21,20 @@ services:
     command: "-consul-addr http://consul-server-bootstrap:8500 -template /tpl/in.tpl:/tpl/out.txt -once"
     volumes:
       - "./tpl:/tpl"
+
+  consul-agent-healthcheck-init:
+    <<: *consul-agent
+    command: "kv import @consul_kv.json"
+    volumes:
+      - "./healthcheck/consul_kv.json:/consul_kv.json"
+
+  consul-agent-healthcheck-clear:
+    <<: *consul-agent
+    command: "kv delete -recurse healthcheck"
+
+  consul-agent-healthcheck-dump:
+    <<: *consul-agent
+    command: "kv get -recurse healthcheck"
+
 networks:
   consul-demo:
